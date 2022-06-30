@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap');
+
+.home-main {
+    height: 100vh;
+    max-width: 100vw;
+    margin-top: 0;
+    background-size: cover;
+    object-fit: fill;
+    font-family: 'Noto Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    min-width: 320px;
+    
+    
+  }
+  .main-text h2 {
+    
+    font-family: 'Quantico', sans-serif;
+    font-size: 24px;
+}
+
+.main-text {
+    width: 25%;
+    color: white;
+    padding-top:50px;
+    margin-left: 50px;
+    
+
+}
+
+.main-text p {
+    margin: 0;
+
+}
+
+@media screen and (max-width:640px){
+  .home-main {
+    opacity: 0.;
+    object-fit: cover;
+    background-position:center center;
+    background-size:cover;
+
+  }
+  .main-text {
+    margin: auto;
+    text-align: center;
+    width: 60%;
+    padding-top: 0; 
+    background: rgba(0, 0, 0, 0.678);
+    border-radius: 15px;
+  }
+  .main-text h2 {
+    font-size: 20px;
+  }
+  
+
+
+  }
+@media screen and (max-width:1024px){
+  .home-main {
+    opacity: 0.;
+    object-fit: cover;
+    background-position:center center;
+    background-size:cover;
+    
+    
+  }
+  .main-text {
+    margin: auto;
+    text-align: center;
+    width: 60%;
+    padding-top: 50; 
+    background: rgba(0, 0, 0, 0.678);
+    border-radius: 15px;
+    padding-left: 5px ;
+    padding-right: 5px;
+
+   
+  }
+  
+
+
+  }
+@media screen and (max-width:425px){
+ 
+  .main-text {
+    width: 100%;
+    text-align: center;
+    font-size:12px ;
+  }
+  .main-text h2 {
+    font-size: 20px;
+  }
+  
+
+
+  }

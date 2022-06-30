@@ -1,0 +1,5 @@
+.git/
+node_modules/
+.env
+requetes.sql
+import_tables.sql

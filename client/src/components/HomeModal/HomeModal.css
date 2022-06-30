@@ -1,0 +1,35 @@
+.modal-box{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 320px;
+    
+}
+
+.hamburger-menu img {
+    padding-left: 15px;
+    padding-top: 6px;
+    height: 1.5em;
+    width: 1.5em;
+    color: white;
+    
+}
+.cross-modal{
+    position: relative;
+    top: -44px;
+    left: -140px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    
+}
+h2{
+    color: white;
+   
+    list-style: none;
+
+}
+.modal-box a {
+    text-decoration: none;
+}

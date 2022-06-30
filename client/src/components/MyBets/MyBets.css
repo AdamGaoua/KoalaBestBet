@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap');
+
+.mybets-content{
+    width: 100%;
+    height: 80vh;
+    background-size: cover;
+    object-fit: fill;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.main-bet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.2);
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+}
+.form-control{
+    display: flex;
+    flex-direction: row;
+}
+.mybets-csgo-logo{
+    height: 100px;
+    margin-bottom: 15px;
+    
+}
+.map-bet{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    justify-content: center;
+    background-color: red;
+}
+.formlabel{
+    display: flex;
+    flex-direction: row;
+}
+.my-bet-confirmation{
+    display: flex;
+    justify-content: center;
+    width: 15vw;
+    height: 200px;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(54, 89, 89, 1) 0%, rgba(89, 45, 29, 1) 100%, rgba(0, 0, 0, 1) 100%);
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-left: 15px;
+    border-radius: 15px;
+    transition: all .3s ease-in-out;
+}
+.my-bet-confirmation:hover {
+    transform: scale(1.1);
+}
+.img-team-logo {
+   height: 50px;
+   width: 50px;
+   display: inline-block;
+   justify-content: space-between;
+   align-items: center;
+   margin-left: auto;
+   margin-right: auto;
+}
+.img-logo-box{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    
+
+}
+.bets-team{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.my-bets-button{
+    margin: 15px;
+    transition: all .3s ease-in-out;
+    
+}
+.my-bets-button:hover{
+    transform: scale(1.1);
+}
+.title-bets{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    
+}
+

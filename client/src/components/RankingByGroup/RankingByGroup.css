@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap');
+.main {
+    padding-left: 30vh;
+    padding-right: 30vh;
+}
+.groupClassement{
+    font-family: 'Noto Sans', sans-serif;
+    color: white;
+    background: linear-gradient(90deg, rgba(54, 89, 89, 1) 0%, rgba(89, 45, 29, 1) 100%, rgba(0, 0, 0, 1) 100%);
+
+    
+}
+.img-team-logo-rank {
+    height: 25px;
+    width: 25px;
+    display: inline-block;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+ }
+.classementTable{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    background:rgb(30, 30, 30);
+}
+
+.table1{
+    background: transparent;
+    
+    backdrop-filter: blur(5px);
+    
+    
+    
+    
+}
+.tftable h2 {
+    font-family: 'Quantico', sans-serif;
+    color: white;
+    font-size: 24px;
+}
+.tftable{
+    
+    background: transparent;
+    border-color:rgb(30, 30, 30);
+}
+.tftable tr{
+    background: transparent;
+    border-color:rgb(30, 30, 30);
+    border:2px solid;
+    font-family: 'Noto Sans', sans-serif;
+    display: flex;
+    
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+ 
+}
+td{
+    width: 50%;
+    align-items: center;
+}
+th{
+    display: flex;
+    justify-content: space-around;
+    width: 50%;
+    align-items: center;
+
+}
+
+
+caption{
+    color: white;
+    text-align: center;
+}
+.tftable th {
+    background-color: transparent;
+    border-color:rgb(30, 30, 30);
+    color: white;
+    font-size: 16px;
+}
+.tftable td {
+    background-color: transparent;
+    border-color:rgb(30, 30, 30);
+    color:orange;
+    font-weight: bold;
+    font-family: 'Noto Sans', sans-serif;
+    text-align: center;
+    font-size: 14px;
+    justify-content: space-around;
+}
+.thead{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.tbody{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

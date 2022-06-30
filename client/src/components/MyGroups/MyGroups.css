@@ -1,0 +1,10 @@
+.MyGroups-content{
+    background-size: cover;
+    object-fit: fill;
+    height: 80vh;
+    padding-top: 50px;
+}
+.btn-rejoindre-groupe:hover{
+    transform: scale(1.1);
+}
+
