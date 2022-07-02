@@ -7,7 +7,7 @@ import {useState, useEffect} from 'react';
 const Ranking = () => {
   const [ranking, setRanking] = useState([]);
   const requestRanking = () => {
-    axios.get(`${process.env.REACT_APP_BASE_URL}/list/rank/limited`,{
+    axios.get(`http://localhost:5050/list/rank/limited`,{
       headers: {
         "Content-Type": 'application/json',
       }

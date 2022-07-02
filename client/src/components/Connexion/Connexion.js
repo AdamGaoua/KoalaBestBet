@@ -22,7 +22,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
 export const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
+    baseURL: `http://localhost:5050`,
     headers: {
       'Content-Type': 'application/json',
   }});
