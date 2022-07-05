@@ -22,7 +22,7 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
 export const axiosInstance = axios.create({
-    baseURL: `http://localhost:5050`,
+    baseURL: `${process.env.REACT_APP_BASE_URL}`,
     headers: {
       'Content-Type': 'application/json',
   }});
@@ -53,7 +53,7 @@ function Connexion () {
       return axiosInstance.get(`/infos/user/${userId}`)        
       }     
     }).then(response =>  {
-      
+      console.log(response);
       localStorage.setItem('infosUser', JSON.stringify(response.data[0]))  
       navigate("/");
     }).catch(error => {console.error(error)
