@@ -24,7 +24,8 @@ import {
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import {axiosInstance} from '../Connexion/Connexion'
+import {RequestToSignup,saveAuthorization} from '../../requests/index'
+
 
 function Inscription () {
   
@@ -38,22 +39,39 @@ function Inscription () {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
-  const onSubmit = (data) =>{
-    
-    return axiosInstance.put('/signup-action', data) 
-  .then(response=>{
-    
-    if (response.status===200){
+  async function onSubmit(data){
+    try {
       
-      setError(response.data);
-    }
-    if (response.status===201){
+      // saveAuthorization(token);
+      const response = await RequestToSignup(data);
       
-      navigate('/connexion')
+      if (response.status===200){
+        
+        setError(response.data);
+      }
+      if (response.status===201){
+        
+        navigate('/connexion')
+      }
+    } catch (error) {
+      console.error(error);
     }
-  })
-  .catch(error=> {console.error(error)})
+
   }
+  // axiosInstance.put('/signup-action', data)
+  // .then(response=>{
+    
+  //   if (response.status===200){
+      
+  //     setError(response.data);
+  //   }
+  //   if (response.status===201){
+      
+  //     navigate('/connexion')
+  //   }
+  // })
+  // .catch(error=> {console.error(error)})
+  // 
   
     return (
         <div className="container">

@@ -4,6 +4,7 @@ import {useState} from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import {useNavigate, Link } from 'react-router-dom';
+import {RequestToLogin, RequestToToken, saveAuthorization} from '../../requests/index'
 
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
@@ -35,29 +36,29 @@ function Connexion () {
   const navigate = useNavigate();
   
   
-  const onSubmit = (data) =>  {    
-    return axiosInstance.post(`/login-action`, data,
+  async function  onSubmit (data){ 
     
-   )
-   
-    .then(response => {       
+    try {
       
+      const response = await RequestToToken(data);
       if (response.status===200){
         return setError(response.data.error)
       }     
       if (response.status===201){
         const token = response.data.token;
         const userId = response.data.userId;
-        sessionStorage.setItem('token', response.data.token);
-        axiosInstance.defaults.headers.common.Authorization = `bearer ${token}`;      
-      return axiosInstance.get(`/infos/user/${userId}`)        
-      }     
-    }).then(response =>  {
-      console.log(response);
-      localStorage.setItem('infosUser', JSON.stringify(response.data[0]))  
-      navigate("/");
-    }).catch(error => {console.error(error)
-    });
+        sessionStorage.setItem('token', response.data.token); 
+        saveAuthorization(token);
+        const res = await RequestToLogin(userId);
+        if(res.status===201){
+          localStorage.setItem('infosUser', JSON.stringify(res.data[0]))  
+          navigate("/");
+        }
+      } 
+
+    } catch (error) {
+      console.error("erreur", error);
+    }
   } 
     return (
             
