@@ -26,13 +26,10 @@ function Connexion () {
   const [password, setPassword] = useState('');  
   const { register, handleSubmit } = useForm();
   const [error, setError]= useState();
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
   
-  
-  async function onSubmit (data){ 
-    
-    try {
-      
+  async function onSubmit (data){     
+    try {      
       const response = await RequestToToken(data);
       if (response.status===200){
         return setError(response.data.error)
@@ -50,7 +47,7 @@ function Connexion () {
       } 
 
     } catch (error) {
-      console.error("erreur", error);
+      console.error(error);
     }
   } 
     return (

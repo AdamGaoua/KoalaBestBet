@@ -14,15 +14,11 @@ import { DataGrid } from "@mui/x-data-grid";
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import axios from 'axios';
+
 import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import {RequestToMatchsIncoming, saveAuthorization, RequestToCreateGroup, RequestToLogin} from '../../requests/index'
-
-
-
-
 
 function CreateGroup (){
 
@@ -50,8 +46,7 @@ function CreateGroup (){
         }
     });
   
-    useEffect(()=>{
-        
+    useEffect(()=>{        
         setTest([...matchSelected]);
     }, [matchSelected])
 
@@ -64,13 +59,7 @@ function CreateGroup (){
     ]
   
     const rows = 
-         data.map((value)=>{        
-        // const date = value.begin_at;        
-        // let datecheck = date.split('').reverse().join('');        
-        // const myDate = datecheck.slice(10).split('').reverse().join('');
-        // const myDateArray = myDate.split('');        
-        // const newDate = `${myDateArray[8]}${myDateArray[9]}${myDateArray[7]}${myDateArray[5]}${myDateArray[6]}${myDateArray[4]}${myDateArray[0]}${myDateArray[1]}${myDateArray[2]}${myDateArray[3]}`
-        
+         data.map((value)=>{              
          return {id :value.id, pari_id:value.id, matchStarted: value.matchStarted, matchName: value.name, teamName1: value.opponents[0].opponent1.name, teamName2: value.opponents[0].opponent2.name}
          })
   
@@ -84,23 +73,6 @@ function CreateGroup (){
             } catch (error) {
                 console.error(error);
             }      
-
-    //     const options = {
-    //     method: 'GET',
-    //     url: `${process.env.REACT_APP_BASE_URL}/list/matchs/upcoming`,        
-    //     headers: {
-    //         Accept: 'application/json',
-    //         Authorization: `Bearer ${token}`}
-    //     };
-
-    //     axios.request(options).then(response => {
-    //     const filteredData = response.data.filter((match)=> match.opponents[0] && match.begin_at!==null)
-    //     setData(filteredData);
-        
-    //     }).catch(function (error) {
-    //     console.error(error);
-    //     });
-        
      }
 
     useEffect(() => {
@@ -126,33 +98,7 @@ function CreateGroup (){
             }            
         } catch (error) {
            console.error(error); 
-        }
-
-        // return axios.put(`${process.env.REACT_APP_BASE_URL}/create-group`,{name : data.name, nbJoueurs: parseInt(data.nbJoueurs), matchs_id: matchSelected},{
-        //     headers: {
-        //       Accept: 'application/json',
-        //       Authorization: 'Bearer ' + token
-        //     }
-        // })
-        // .then(response=>{       
-        //     if(response.status === 201) {
-        //         setInvitation(response.data.invitation_link);            
-        //     return axios.get(`${process.env.REACT_APP_BASE_URL}/infos/user/${id}`, {
-        //         headers: {
-        //           Accept: 'application/json',
-        //           Authorization: 'Bearer ' + token
-        //         }
-        //     })
-        //     }
-        //     else {
-        //         setError(response.data.error)
-        //     }
-        // })
-        // .then(response =>{
-        //     localStorage.setItem('infosUser', JSON.stringify(response.data[0]));
-        //     setInvitationChecked(true);
-        // })
-        // .catch(error=>{console.error("error", error)})
+        }   
     }
     
     const handleClick = () => {

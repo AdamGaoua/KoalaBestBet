@@ -16,42 +16,51 @@ import {FormLabel,
 
 import { useNavigate } from "react-router-dom";
 import { NavLink} from 'react-router-dom';
+import {saveAuthorization, RequestToListsMatchs} from '../../requests/index'
 
 const MyBets = () => {
   const token = sessionStorage.getItem("token");
-  const navigate = useNavigate();
-  
-  
+  const navigate = useNavigate();  
   const group_id = JSON.parse(localStorage.getItem('group_id'));
   const [error, setError] = useState();
   const [dataMatch, setDataMatch] = useState([]);
   const [value, setValue] = useState({});
-  const[logoOn,setLogoOn]=useState(true);
+ 
 
   useEffect(() => {
     let options = {};
-
     dataMatch.forEach((match, i) => {
       options[`value${i}`] = 0;
     });
     setValue({ ...options });
   }, []);
 
-  function requestListMatchsByGroup() {
-    axios.get(`${process.env.REACT_APP_BASE_URL}/list/matchs/group/${group_id}`,{
-      headers: {
-        Accept: 'application/json',
-       Authorization: 'Bearer ' + token
-      }
-    })
-    .then(response => {
+  async function requestListMatchsByGroup() {
+    try {
+      saveAuthorization(token);
+      const response = await RequestToListsMatchs(group_id);
       if(response.status === 201) {
-        setDataMatch(response.data);
+      setDataMatch(response.data);
       } else {
-        setError(response.data.error);
+      setError(response.data.error);
       }
-    })
-    .catch(error=>console.error(error));
+    } catch (error) {
+      console.error(error);
+    }
+    // axios.get(`${process.env.REACT_APP_BASE_URL}/list/matchs/group/${group_id}`,{
+    //   headers: {
+    //     Accept: 'application/json',
+    //    Authorization: 'Bearer ' + token
+    //   }
+    // })
+    // .then(response => {
+    //   if(response.status === 201) {
+    //     setDataMatch(response.data);
+    //   } else {
+    //     setError(response.data.error);
+    //   }
+    // })
+    // .catch(error=>console.error(error));
   }
   useEffect(() => {
     requestListMatchsByGroup();    

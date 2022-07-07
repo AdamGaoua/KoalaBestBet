@@ -5,7 +5,7 @@ import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 
-import axios from 'axios';
+import {saveAuthorization, RequestToDeleteUser,RequestToUpdateUser} from '../../requests';
 
 import {Box, 
         Card,
@@ -75,17 +75,13 @@ function Profil(){
         fontWeigth:'bold',
       };
 
-    const onSubmit = (data)=>{
-        
-        return axios.patch(`${process.env.REACT_APP_BASE_URL}/infos/user/${id}`,{username : data.username, firstname: data.firstname, lastname:data.lastname, email:data.email, password: data.password },{
-            headers: {
-              Accept: 'application/json',
-              Authorization: 'Bearer ' + token
-            }
-        })
-        .then(response =>{
-           
-            if (response.status===201){
+    async function onSubmit(data){
+       
+        try {
+           saveAuthorization(token);
+           const response = await RequestToUpdateUser(id, data);
+          
+           if (response.status===201){
                 setOpen(false);
                 setActualEmail(data.email);
                 setActualUsername(data.username);
@@ -93,28 +89,29 @@ function Profil(){
                 setActualLastname(data.lastname);          
             }
             if (response.status===200){
-                setError(response.data.error);
+                setError(response.data.error);                
             }
-            
-        })
-        .catch(error=>console.error(error))
+
+        } catch (error) {
+        console.error(error); 
+        }
     }
-    const handleDelete = () =>{
-        return axios.delete(`${process.env.REACT_APP_BASE_URL}/delete-account/${id}`,{
-            headers: {
-              Accept: 'application/json',
-              Authorization: 'Bearer ' + token
-            }
-            })
-            .then(response=>{
-                
+  
+    async function handleDelete(){
+        try {
+            saveAuthorization(token);
+            const response = await RequestToDeleteUser(id);
+            if (response.status===201){
                 localStorage.removeItem('infosUser');
                 sessionStorage.removeItem('token');
                 localStorage.removeItem('infosMatchs');
                 localStorage.removeItem('invitationLink');
                 navigate("/");
-            })
-            .catch(error=>console.error(error))
+            }
+
+        } catch (error) {
+            console.error(error);
+        }       
     }
     return (
         <div className="profil">

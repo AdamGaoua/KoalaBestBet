@@ -5,6 +5,7 @@ import "./MyGroup.css";
 import axios from 'axios';
 import {useState} from 'react';
 import { useNavigate } from "react-router-dom";
+import {saveAuthorization, RequestToLogin, RequestToDeleteGroup } from '../../../requests/index';
 
 
 
@@ -27,39 +28,23 @@ const MyGroup = ({name, nb_participants, nb_participants_max, hasBet, group_id, 
     setAskDelete(true);
   }
 
-  const handleDelete = () =>{
-    
-    axios.delete(`${process.env.REACT_APP_BASE_URL}/delete-group/group/${group_id}`, {
-      headers: {
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token
-      }
-    })
-    .then(response=>{
-      
-        
-        const dataGroupFiltered = dataGroup.filter((item)=> item.group_id !== group_id);
-        
+  async function handleDelete (id) {
+    try {      
+      saveAuthorization(token);
+      const response = await RequestToDeleteGroup(group_id);
+      if (response.status===201){
+        const dataGroupFiltered = dataGroup.filter((item)=> item.group_id !== group_id);        
         setDataGroup(dataGroupFiltered);     
         setAskDelete(false);
-      
-
-      
-      
-      return axios.get(`${process.env.REACT_APP_BASE_URL}/infos/user/${id}`, {
-        headers: {
-          Accept: 'application/json',
-          Authorization: 'Bearer ' + token
+        const res = await RequestToLogin(id);
+        if (res.status===201){
+          localStorage.setItem('infosUser', JSON.stringify(res.data[0]));
+          navigate('/MyGroups');  
         }
-      })
-    })
-    .then(response =>{
-      // localStorage.removeItem('infosUser');
-      localStorage.setItem('infosUser', JSON.stringify(response.data[0]));
-      navigate('/MyGroups');
-      
-    })
-    .catch(error=>console.error(error));
+      }
+    } catch (error) {
+      console.error(error);
+    }      
   }
   
   return (

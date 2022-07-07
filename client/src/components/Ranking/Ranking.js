@@ -1,22 +1,22 @@
 import React from "react";
 import "./Ranking.css";
-import axios from 'axios';
 import {useState, useEffect} from 'react';
+import {RequestToRanking} from '../../requests/index'
 
 
 const Ranking = () => {
   const [ranking, setRanking] = useState([]);
-  const requestRanking = () => {
-    axios.get(`${process.env.REACT_APP_BASE_URL}/list/rank/limited`,{
-      headers: {
-        "Content-Type": 'application/json',
+  
+async function requestRanking () {
+    try {
+      const response = await RequestToRanking();
+      if (response.status===201){
+        setRanking(response.data)
       }
-    })
-    .then(response=>{
-      
-      setRanking(response.data)
-    })
-  }
+    } catch (error) {
+      console.error(error);
+    }
+   }
 
   useEffect(()=>{
     requestRanking();

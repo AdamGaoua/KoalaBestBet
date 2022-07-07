@@ -3,7 +3,7 @@ import Footer from '../Footer/Footer';
 import './RankingByGroup.css';
 import {Button} from '@mui/material';
 
-import axios from 'axios';
+import { saveAuthorization, RequestToRankingGroup, RequestToLogin,RequestToVerifyBet,RequestToUpdatePoints } from '../../requests';
 
 import  {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -19,68 +19,55 @@ function RankingByGroup (){
     const {id} = infosUser;    
     const [error, setError] = useState();
 
-    const axiosInstance = axios.create({
-        baseURL: `${process.env.REACT_APP_BASE_URL}`,        
-        headers: {
-            Accept: 'application/json',
-            Authorization: 'Bearer ' + token
-          }
-      });
-
-    const requestRankingGroup = () => {
-        
-        return axiosInstance.get(`/list/rank/group/${group_id}`)         
-        .then(response => {  
-            console.log(response)          
-            if (response.status===200){
+    async function requestRankingGroup(){
+        try {
+            saveAuthorization(token);
+            const response = await RequestToRankingGroup(group_id);
+            if (response.status === 200) {
                 setError(response.data.error);
             }
-            setClassementGroup(response.data);
-        
-
-                       
-        })
-        .catch(error=> console.error(error));
+            if (response.status===201){
+                setClassementGroup(response.data);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    const requestVerifyBet = () =>{
+    async function requestVerifyBet (){
 
-        axiosInstance.patch(`/verify-bet/group/${group_id}`)
-        .then(response =>{
-            console.log("verif", response)
-            if (response.status===201){
-                return axiosInstance.get(`/update-points/group/${group_id}`)
+        try {
+          saveAuthorization(token);
+          const response = await RequestToVerifyBet(group_id);
+          if (response.status===201){
+            const res = await RequestToUpdatePoints(group_id);
+            if (res.status===200){
+                setError(res.data.error)
             }
-        })
-        .then(response => {
-            if (response.status===200){
-                setError(response.data.error)
+            if (res.status===201){
+                requestRankingGroup();
+                const resp = await RequestToLogin(id);
+                if (resp.status===201){
+                    localStorage.setItem('infosUser', JSON.stringify(resp.data[0]))  
+                }
             }
-            console.log("update", response)
-            if (response.status===201){
-            requestRankingGroup();  
-            return axiosInstance.get(`/infos/user/${id}`)
-        }}).then(response => {
-            
-            localStorage.setItem('infosUser', JSON.stringify(response.data[0]))       
-        })                
-        .catch(error=> console.error(error));
-        }    
-    
+          } else {
+              setError(response.data.error)
+          }  
+        } catch (error) {
+            console.error(error);
+        }
+    }
         useEffect(()=>{
             
             if (!group_id){
                 navigate('/mygroups')
             }
             requestRankingGroup();
-            // if(classementGroup.matchFinished > 0) 
+            
             requestVerifyBet(); 
         },[])
-         
-        const handleClick = () => {
-            navigate('/mygroups')
-        }
-
+   
     return (
         <div >
 

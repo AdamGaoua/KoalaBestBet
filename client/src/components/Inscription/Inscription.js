@@ -40,38 +40,18 @@ function Inscription () {
   const navigate = useNavigate();
 
   async function onSubmit(data){
-    try {
-      
-      // saveAuthorization(token);
-      const response = await RequestToSignup(data);
-      
-      if (response.status===200){
-        
+    try {         
+      const response = await RequestToSignup(data);      
+      if (response.status===200){        
         setError(response.data);
       }
-      if (response.status===201){
-        
+      if (response.status===201){        
         navigate('/connexion')
       }
     } catch (error) {
       console.error(error);
     }
-
   }
-  // axiosInstance.put('/signup-action', data)
-  // .then(response=>{
-    
-  //   if (response.status===200){
-      
-  //     setError(response.data);
-  //   }
-  //   if (response.status===201){
-      
-  //     navigate('/connexion')
-  //   }
-  // })
-  // .catch(error=> {console.error(error)})
-  // 
   
     return (
         <div className="container">
