@@ -14,7 +14,7 @@ import {Button,
         Modal, 
         Input} from '@mui/material';
 
-
+import {saveAuthorization,RequestToJoinGroup, RequestToListsGroups} from '../../requests/index';
 
 
 const MyGroups = () => {
@@ -23,7 +23,6 @@ const MyGroups = () => {
   const infosUser = JSON.parse(localStorage.getItem('infosUser'));
   const token = sessionStorage.getItem('token');
   const [dataGroup,setDataGroup] = useState([]);
-  // const [render, setRender] = useState(false);
   const [link, setLink]=useState([]);
   const { register, handleSubmit } = useForm();
   const [error, setError]= useState();
@@ -45,38 +44,63 @@ const MyGroups = () => {
 
 
     
-  const onSubmit = () =>{
-   
-    return axios.get(`${process.env.REACT_APP_BASE_URL}/invite/${link}`,{
-      headers: {
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token
+  async function onSubmit (){
+    try {
+      
+      await saveAuthorization(token);
+      const response = await RequestToJoinGroup(link);
+      console.log(response);
+      if (response.status===200){
+        setError(response.data.error)
+      }     
+      if (response.status===201){
+        requestListGroupsByUser(); 
       }
-      })
-      .then(response=>{
-        if (response.status===200){
-          return setError(response.data.error)
-        }     
-        if (response.status===201){
-         requestListGroupsByUser(); 
-        }
-        setOpen(false);        
-      })
-  }
-  function requestListGroupsByUser() {
+      setOpen(false);  
+    } catch (error) {
+      console.error(error);
+    }
     
-    axios.get(`${process.env.REACT_APP_BASE_URL}/list/groups/user/${infosUser.id}`, {
-      headers: {
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + token
-      }
-      })
-    .then(response => {      
+
+    // return axios.get(`${process.env.REACT_APP_BASE_URL}/invite/${link}`,{
+    //   headers: {
+    //     Accept: 'application/json',
+    //     Authorization: 'Bearer ' + token
+    //   }
+    //   })
+    //   .then(response=>{
+    //     if (response.status===200){
+    //       return setError(response.data.error)
+    //     }     
+    //     if (response.status===201){
+    //      requestListGroupsByUser(); 
+    //     }
+    //     setOpen(false);        
+    //   })
+  }
+  async function requestListGroupsByUser() {
+    
+    try {
+      
+      saveAuthorization(token);
+      const response = await RequestToListsGroups(infosUser.id);
       setDataGroup(response.data);      
       localStorage.setItem(`infosMatchs`, JSON.stringify(response.data));
-      // setRender(true);
-    })
-    .catch(error=>console.error(error))
+    } catch (error) {
+      console.error(error);
+    }
+    // axios.get(`${process.env.REACT_APP_BASE_URL}/list/groups/user/${infosUser.id}`, {
+    //   headers: {
+    //     Accept: 'application/json',
+    //     Authorization: 'Bearer ' + token
+    //   }
+    //   })
+    // .then(response => {      
+    //   setDataGroup(response.data);      
+    //   localStorage.setItem(`infosMatchs`, JSON.stringify(response.data));
+   
+    // })
+    // .catch(error=>console.error(error))
   }
   
   useEffect(() => {

@@ -2,7 +2,6 @@ import imgConnexionLarge from '../../assets/images/imgConnexionLarge.jpg'
 import './Connexion.css';
 import {useState} from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import {useNavigate, Link } from 'react-router-dom';
 import {RequestToLogin, RequestToToken, saveAuthorization} from '../../requests/index'
 
@@ -22,12 +21,6 @@ import {
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
-export const axiosInstance = axios.create({
-    baseURL: `${process.env.REACT_APP_BASE_URL}`,
-    headers: {
-      'Content-Type': 'application/json',
-  }});
-
 function Connexion () {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');  
@@ -36,7 +29,7 @@ function Connexion () {
   const navigate = useNavigate();
   
   
-  async function  onSubmit (data){ 
+  async function onSubmit (data){ 
     
     try {
       

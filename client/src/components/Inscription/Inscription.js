@@ -24,7 +24,7 @@ import {
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import {RequestToSignup,saveAuthorization} from '../../requests/index'
+import {RequestToSignup} from '../../requests/index'
 
 
 function Inscription () {

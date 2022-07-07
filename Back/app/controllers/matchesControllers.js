@@ -4,7 +4,8 @@ const options = {
   method: 'GET',
   headers: {
     Accept: 'application/json',
-    Authorization: `Bearer 9_bR2-LLyzrE4sQWOS_XZZNZSOS7gEU_fEPpm2-K5U5CtYR2eXM`
+    Authorization: `Bearer ${process.env.PANDA_KEY}`
+    // 9_bR2-LLyzrE4sQWOS_XZZNZSOS7gEU_fEPpm2-K5U5CtYR2eXM
   }
 };
 const matchController = {
@@ -16,6 +17,7 @@ const matchController = {
     .then(response => {
       return response.json()
     }).then((res) => {
+      
         res.filter((element) => {
           if(element.opponents.length === 2) {
             let dataDate = element.begin_at
@@ -27,7 +29,7 @@ const matchController = {
               utcDate.getHours() + 2,
               utcDate.getMinutes()
             ));
-            console.log(element.opponents[0].opponent.name)
+            
            upcoming.push({
             id: element.id,
             matchStarted: myLocalDate.toLocaleString("fr"),

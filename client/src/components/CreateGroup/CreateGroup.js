@@ -15,10 +15,10 @@ import { DataGrid } from "@mui/x-data-grid";
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import axios from 'axios';
-// import {axiosInstance} from '../Connexion/Connexion'
 import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import {RequestToMatchsIncoming, saveAuthorization, RequestToCreateGroup, RequestToLogin} from '../../requests/index'
 
 
 
@@ -38,11 +38,6 @@ function CreateGroup (){
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
 
-
-   
-    
-    
-    
     const token = sessionStorage.getItem('token');
     const infosUser = JSON.parse(localStorage.getItem('infosUser'));
     const {invitation_link, id} = infosUser;   
@@ -79,56 +74,85 @@ function CreateGroup (){
          return {id :value.id, pari_id:value.id, matchStarted: value.matchStarted, matchName: value.name, teamName1: value.opponents[0].opponent1.name, teamName2: value.opponents[0].opponent2.name}
          })
   
-    function requestMatchsIncoming(){        
+    async function requestMatchsIncoming(){  
+        saveAuthorization(token);
+            try {
+                const response = await RequestToMatchsIncoming();
+                const filteredData = response.data.filter((match)=> match.opponents[0] && match.begin_at!==null)
+                setData(filteredData);
+                
+            } catch (error) {
+                console.error(error);
+            }      
 
-        const options = {
-        method: 'GET',
-        url: `${process.env.REACT_APP_BASE_URL}/list/matchs/upcoming`,        
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${token}`}
-        };
+    //     const options = {
+    //     method: 'GET',
+    //     url: `${process.env.REACT_APP_BASE_URL}/list/matchs/upcoming`,        
+    //     headers: {
+    //         Accept: 'application/json',
+    //         Authorization: `Bearer ${token}`}
+    //     };
 
-        axios.request(options).then(response => {
-        const filteredData = response.data.filter((match)=> match.opponents[0] && match.begin_at!==null)
-        setData(filteredData);
+    //     axios.request(options).then(response => {
+    //     const filteredData = response.data.filter((match)=> match.opponents[0] && match.begin_at!==null)
+    //     setData(filteredData);
         
-        }).catch(function (error) {
-        console.error(error);
-        });
+    //     }).catch(function (error) {
+    //     console.error(error);
+    //     });
         
-    }
+     }
+
     useEffect(() => {
         requestMatchsIncoming();        
       },[]);
     
-    const onSubmit = (data) =>{
+    async function onSubmit (data){
         
-        return axios.put(`${process.env.REACT_APP_BASE_URL}/create-group`,{name : data.name, nbJoueurs: parseInt(data.nbJoueurs), matchs_id: matchSelected},{
-            headers: {
-              Accept: 'application/json',
-              Authorization: 'Bearer ' + token
-            }
-        })
-        .then(response=>{       
+        try {
+            saveAuthorization(token);
+            const response = await RequestToCreateGroup(data, matchSelected);
+            console.log(response);
             if(response.status === 201) {
-                setInvitation(response.data.invitation_link);            
-            return axios.get(`${process.env.REACT_APP_BASE_URL}/infos/user/${id}`, {
-                headers: {
-                  Accept: 'application/json',
-                  Authorization: 'Bearer ' + token
-                }
-            })
-            }
-            else {
-                setError(response.data.error)
-            }
-        })
-        .then(response =>{
-            localStorage.setItem('infosUser', JSON.stringify(response.data[0]));
-            setInvitationChecked(true);
-        })
-        .catch(error=>{console.error("error", error)})
+                setInvitation(response.data.invitation_link);
+                const res = await RequestToLogin(id);
+                    if (res.status===201){
+                        localStorage.setItem('infosUser', JSON.stringify(res.data[0]));
+                        setInvitationChecked(true); 
+                    }
+                    else{
+                        setError(res.data.error)
+                    }
+            }            
+        } catch (error) {
+           console.error(error); 
+        }
+
+        // return axios.put(`${process.env.REACT_APP_BASE_URL}/create-group`,{name : data.name, nbJoueurs: parseInt(data.nbJoueurs), matchs_id: matchSelected},{
+        //     headers: {
+        //       Accept: 'application/json',
+        //       Authorization: 'Bearer ' + token
+        //     }
+        // })
+        // .then(response=>{       
+        //     if(response.status === 201) {
+        //         setInvitation(response.data.invitation_link);            
+        //     return axios.get(`${process.env.REACT_APP_BASE_URL}/infos/user/${id}`, {
+        //         headers: {
+        //           Accept: 'application/json',
+        //           Authorization: 'Bearer ' + token
+        //         }
+        //     })
+        //     }
+        //     else {
+        //         setError(response.data.error)
+        //     }
+        // })
+        // .then(response =>{
+        //     localStorage.setItem('infosUser', JSON.stringify(response.data[0]));
+        //     setInvitationChecked(true);
+        // })
+        // .catch(error=>{console.error("error", error)})
     }
     
     const handleClick = () => {
